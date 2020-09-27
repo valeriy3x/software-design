@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class DataRepository {
-    private MutableLiveData<String> inputNumber = new MutableLiveData<String>("0");
+    private MutableLiveData<String> inputNumber = new MutableLiveData<>("0");
 
     private static DataRepository instance;
 
@@ -24,7 +25,8 @@ public class DataRepository {
 
     public void insertChar(String newChar) {
         String newValue = inputNumber.getValue();
-        if (newValue == "0" && newChar != ".")
+        assert newValue != null;
+        if (newValue.equals("0") && !newChar.equals("."))
             newValue = newChar;
         else
             newValue += newChar;
@@ -32,7 +34,7 @@ public class DataRepository {
     }
 
     public void removeChar() {
-        if (inputNumber.getValue() == "0")
+        if (Objects.equals(inputNumber.getValue(), "0"))
             return;
         String newValue = inputNumber.getValue();
         newValue = removeLastChar(newValue);
