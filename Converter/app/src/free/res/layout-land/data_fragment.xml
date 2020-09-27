@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/block_background"
@@ -61,33 +61,20 @@
             android:importantForAutofill="no"
             android:textColor="@android:color/white"
             android:textSize="@dimen/data_textsize"
-            app:layout_constraintEnd_toStartOf="@+id/button_copy_entry"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView_from" />
-
-        <ImageButton
-            android:id="@+id/button_swap"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/button_accent"
-            android:src="@drawable/ic_baseline_swap_vert_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edittext_input"
-            tools:ignore="ContentDescription, OnClick"
-            android:onClick="swapValues" />
 
         <TextView
             android:id="@+id/textView_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:text="@string/converter_to"
             android:textColor="@android:color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_swap" />
+            app:layout_constraintTop_toBottomOf="@+id/edittext_input" />
 
         <EditText
             android:id="@+id/edittext_output"
@@ -104,7 +91,7 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/data_textsize"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_copy_result"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView_to"
             app:layout_constraintVertical_bias="1.0" />
@@ -129,32 +116,6 @@
             app:layout_constraintStart_toEndOf="@+id/textView_to"
             app:layout_constraintTop_toTopOf="@+id/textView_to" />
 
-        <Button
-            android:id="@+id/button_copy_entry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/button_accent"
-            android:text="@string/button_copy"
-            android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/edittext_input"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:onClick="copyEntry"
-            tools:ignore="OnClick"
-            />
-
-        <Button
-            android:id="@+id/button_copy_result"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/button_accent"
-            android:text="@string/button_copy"
-            android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/edittext_output"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:onClick="copyOutput"
-            tools:ignore="OnClick" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

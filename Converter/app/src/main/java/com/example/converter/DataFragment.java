@@ -78,7 +78,6 @@ public class DataFragment extends Fragment {
         });
 
 
-
         mViewModel.getInputMeasurement().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -102,9 +101,6 @@ public class DataFragment extends Fragment {
         mUnitSpinner = getActivity().findViewById(R.id.spinner_unit);
         mInputSpinner = getActivity().findViewById(R.id.spinner_entry);
         mOutputSpinner = getActivity().findViewById(R.id.spinner_result);
-        mSwapButton = getActivity().findViewById(R.id.button_swap);
-        mCopyInputButton = getActivity().findViewById(R.id.button_copy_entry);
-        mCopyOutputButton = getActivity().findViewById(R.id.button_copy_result);
 
         adapterUnit = ArrayAdapter.createFromResource(getActivity(), R.array.units, R.layout.spinner_unit);
         adapterUnit.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -156,35 +152,26 @@ public class DataFragment extends Fragment {
             }
         });
 
-        mSwapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mViewModel.swapValues();
-            }
-        });
+    }
 
-        mCopyInputButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText(getString(R.string.copied_entry), mInputEditText.getText().toString());
-                clipboard.setPrimaryClip(clip);
-                Toast toast = Toast.makeText(getActivity(), R.string.toast_copy, Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+    public void swapValues() {
+        mViewModel.swapValues();
+    }
 
-        mCopyOutputButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText(getString(R.string.copied_output), mOutputEditText.getText().toString());
-                clipboard.setPrimaryClip(clip);
-                Toast toast = Toast.makeText(getActivity(), R.string.toast_copy, Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+    public void copyEntry() {
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(getString(R.string.copied_entry), mInputEditText.getText().toString());
+        clipboard.setPrimaryClip(clip);
+        Toast toast = Toast.makeText(getActivity(), R.string.toast_copy, Toast.LENGTH_SHORT);
+        toast.show();
+    }
 
+    public void copyResult() {
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(getString(R.string.copied_output), mOutputEditText.getText().toString());
+        clipboard.setPrimaryClip(clip);
+        Toast toast = Toast.makeText(getActivity(), R.string.toast_copy, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
 
