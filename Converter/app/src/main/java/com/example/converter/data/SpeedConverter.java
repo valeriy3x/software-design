@@ -16,8 +16,10 @@ public class SpeedConverter implements UnitConverter {
 
     @Override
     public Double getMultiplier(String name) {
-        //TODO: Implement null pointer exception check
-        return mValuesTable.get(name);
+        if (mValuesTable.containsKey(name))
+            return mValuesTable.get(name);
+        else
+            throw new IllegalArgumentException();
     }
 
     public List<String> getCategories() {

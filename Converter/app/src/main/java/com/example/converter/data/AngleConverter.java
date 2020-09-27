@@ -1,5 +1,6 @@
 package com.example.converter.data;
 
+import java.security.KeyException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,8 +17,10 @@ public class AngleConverter implements UnitConverter {
 
     @Override
     public Double getMultiplier(String name) {
-        //TODO: Implement null pointer exception check
-        return mValuesTable.get(name);
+        if (mValuesTable.containsKey(name))
+            return mValuesTable.get(name);
+        else
+            throw new IllegalArgumentException();
     }
 
     @Override
