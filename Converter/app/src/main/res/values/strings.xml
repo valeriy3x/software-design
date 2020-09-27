@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Converter</string>
+    <string name="numOne">1</string>
+    <string name="numTwo">2</string>
+    <string name="numThree">3</string>
+    <string name="numFour">4</string>
+    <string name="numFive">5</string>
+    <string name="numSix">6</string>
+    <string name="numSeven">7</string>
+    <string name="numEight">8</string>
+    <string name="numNine">9</string>
+    <string name="numZero">0</string>
+    <string name="numDot">.</string>
+    <string name="numDelete">\u232B</string>
+    <string name="converter_from">"From: "</string>
+    <string name="converter_to">To:</string>
+    <string name="toast_copy">Value Was Copied To The Clipboard</string>
+    <string name="copied_entry">unit converter entry value</string>
+    <string name="copied_output">unit converter result value</string>
+    <string name="button_copy">Copy</string>
+
+    <string-array name="units">
+        <item>Angle</item>
+        <item>Speed</item>
+        <item>Weight</item>
+    </string-array>
+
+    <string-array name="angle">
+        <item>Degree</item>
+        <item>Radian</item>
+        <item>Grad</item>
+    </string-array>
+
+    <string-array name="speed">
+        <item>Meter/Second</item>
+        <item>Kilometer/Hour</item>
+        <item>Mile/Hour</item>
+    </string-array>
+
+    <string-array name="weight">
+        <item>Kilogram</item>
+        <item>Pound</item>
+        <item>Ounce</item>
+    </string-array>
+</resources>
