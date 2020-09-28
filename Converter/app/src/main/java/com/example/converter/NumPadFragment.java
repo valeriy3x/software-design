@@ -2,6 +2,8 @@ package com.example.converter;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
