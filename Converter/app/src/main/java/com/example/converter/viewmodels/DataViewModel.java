@@ -9,25 +9,20 @@ import com.example.converter.data.SpeedConverter;
 import com.example.converter.data.Unit;
 import com.example.converter.data.UnitConverter;
 import com.example.converter.data.WeightConverter;
-import com.example.converter.repositories.DataRepository;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class DataViewModel extends ViewModel {
     private UnitConverter unitConverter;
     private MutableLiveData<Unit> currentUnit = new MutableLiveData<>();
-    private MutableLiveData<String> inputValue;
+    private MutableLiveData<String> inputValue = new MutableLiveData<String>("0");;
     private MutableLiveData<String> inputMeasurement = new MutableLiveData<>();
     private MutableLiveData<String> outputMeasurement = new MutableLiveData<>();
 
-    private DataRepository mRepo;
 
     public void init() {
-        if (inputValue != null)
-            return;
-        mRepo = DataRepository.getInstance();
-        inputValue = mRepo.getInputNumber();
         unitConverter = new AngleConverter();
         inputMeasurement.setValue("Degree");
         outputMeasurement.setValue("Radian");
@@ -85,15 +80,14 @@ public class DataViewModel extends ViewModel {
     }
 
     public String calculateOutput() {
-        Double inputMultiplier = unitConverter.getMultiplier(inputMeasurement.getValue());
-        Double outputMultiplier = unitConverter.getMultiplier(outputMeasurement.getValue());
-        Double multiplier = outputMultiplier / inputMultiplier;
-
         String input = inputValue.getValue();
         if (input.endsWith("."))
             input = input.substring(0, input.length() - 1);
 
-        Double result = Double.parseDouble(input) * multiplier;
+        Double result = unitConverter.calculateResult(inputMeasurement.getValue(),
+                outputMeasurement.getValue(),
+                Double.parseDouble(inputValue.getValue()));
+
         return String.format(Locale.US, "%.4f", result);
     }
 
@@ -104,4 +98,34 @@ public class DataViewModel extends ViewModel {
         outputMeasurement.setValue(entryMeasurement);
         inputValue.setValue(outputValue);
     }
+
+    public void insertChar(String newChar) {
+        String newValue = inputValue.getValue();
+        assert newValue != null;
+        if (newValue.equals("0") && !newChar.equals("."))
+            newValue = newChar;
+        else
+            newValue += newChar;
+        inputValue.setValue(newValue);
+    }
+
+    public void removeChar() {
+        if (Objects.equals(inputValue.getValue(), "0"))
+            return;
+        String newValue = inputValue.getValue();
+        newValue = removeLastChar(newValue);
+        if (newValue.isEmpty())
+            newValue = "0";
+        inputValue.setValue(newValue);
+    }
+
+    private static String removeLastChar(String str) {
+        return removeLastChars(str, 1);
+    }
+
+    private static String removeLastChars(String str, int chars) {
+        return str.substring(0, str.length() - chars);
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.example.converter;
 
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.ClipData;
@@ -26,6 +27,9 @@ import android.widget.Toast;
 import com.example.converter.data.Unit;
 import com.example.converter.viewmodels.DataViewModel;
 
+import java.util.List;
+import java.util.Objects;
+
 public class DataFragment extends Fragment {
 
     private DataViewModel mViewModel;
@@ -37,9 +41,6 @@ public class DataFragment extends Fragment {
     private ArrayAdapter<CharSequence> adapterUnit;
     private ArrayAdapter<String> adapterInput;
     private ArrayAdapter<String> adapterOutput;
-    private ImageButton mSwapButton;
-    private Button mCopyInputButton;
-    private Button mCopyOutputButton;
 
     public static DataFragment newInstance() {
         return new DataFragment();
@@ -48,16 +49,19 @@ public class DataFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.data_fragment, container, false);
-        return view;
+        View fragmentView = inflater.inflate(R.layout.data_fragment, container, false);
+
+        initComponents(fragmentView);
+
+        return fragmentView;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(DataViewModel.class);
+        mViewModel = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
         mViewModel.init();
-        initComponents();
+        initSpinners(Objects.requireNonNull(getView()));
         mViewModel.getInputValue().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -69,11 +73,15 @@ public class DataFragment extends Fragment {
         mViewModel.getCurrentUnit().observe(getViewLifecycleOwner(), new Observer<Unit>() {
             @Override
             public void onChanged(Unit unit) {
-                adapterInput = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, mViewModel.getCurrentCategories());
-                mInputSpinner.setAdapter(adapterInput);
+                List<String> dataSet = mViewModel.getCurrentCategories();
 
-                adapterOutput = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, mViewModel.getCurrentCategories());
-                mOutputSpinner.setAdapter(adapterInput);
+                adapterInput.clear();
+                adapterInput.addAll(dataSet);
+                adapterInput.notifyDataSetChanged();
+
+                adapterOutput.clear();
+                adapterOutput.addAll(dataSet);
+                adapterOutput.notifyDataSetChanged();
             }
         });
 
@@ -95,21 +103,24 @@ public class DataFragment extends Fragment {
         });
     }
 
-    private void initComponents() {
-        mInputEditText = getActivity().findViewById(R.id.edittext_input);
-        mOutputEditText = getActivity().findViewById(R.id.edittext_output);
-        mUnitSpinner = getActivity().findViewById(R.id.spinner_unit);
-        mInputSpinner = getActivity().findViewById(R.id.spinner_entry);
-        mOutputSpinner = getActivity().findViewById(R.id.spinner_result);
+    private void initComponents(View view) {
+        mInputEditText = view.findViewById(R.id.edittext_input);
+        mOutputEditText = view.findViewById(R.id.edittext_output);
+        mUnitSpinner = view.findViewById(R.id.spinner_unit);
+        mInputSpinner = view.findViewById(R.id.spinner_entry);
+        mOutputSpinner = view.findViewById(R.id.spinner_result);
+    }
 
-        adapterUnit = ArrayAdapter.createFromResource(getActivity(), R.array.units, R.layout.spinner_unit);
+    private void initSpinners(View view) {
+        adapterUnit = ArrayAdapter.createFromResource(view.getContext(), R.array.units, R.layout.spinner_unit);
         adapterUnit.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         mUnitSpinner.setAdapter(adapterUnit);
 
-        adapterInput = new ArrayAdapter<String>(getActivity(),
+        adapterInput = new ArrayAdapter<String>(view.getContext(),
                 R.layout.support_simple_spinner_dropdown_item, mViewModel.getCurrentCategories());
         mInputSpinner.setAdapter(adapterInput);
-        adapterOutput = new ArrayAdapter<String>(getActivity(),
+
+        adapterOutput = new ArrayAdapter<String>(view.getContext(),
                 R.layout.support_simple_spinner_dropdown_item, mViewModel.getCurrentCategories());
         mOutputSpinner.setAdapter(adapterOutput);
 
@@ -143,7 +154,6 @@ public class DataFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mViewModel.setOutputMeasurement(parent.getItemAtPosition(position).toString());
                 mOutputEditText.setText(mViewModel.calculateOutput());
-
             }
 
             @Override
@@ -151,7 +161,6 @@ public class DataFragment extends Fragment {
 
             }
         });
-
     }
 
     public void swapValues() {
